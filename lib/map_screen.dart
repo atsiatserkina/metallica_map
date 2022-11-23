@@ -16,6 +16,7 @@ class MapScreen extends StatefulWidget {
 }
 
 class _MapScreenState extends State<MapScreen> {
+  final PopupController _popupController = PopupController();
   List<Marker> markers = [];
   List concerts = [];
 
@@ -63,6 +64,7 @@ class _MapScreenState extends State<MapScreen> {
             LatLng(-90, -180.0),
             LatLng(90.0, 180.0),
           ),
+          onTap: (_, __) => _popupController.hideAllPopups(),
         ),
         children: <Widget>[
           TileLayer(
@@ -82,6 +84,21 @@ class _MapScreenState extends State<MapScreen> {
                 maxZoom: 15,
               ),
               markers: markers,
+              popupOptions: PopupOptions(
+                  popupState: PopupState(),
+                  popupSnap: PopupSnap.markerTop,
+                  popupController: _popupController,
+                  popupBuilder: (_, marker) => Container(
+                    width: 200,
+                    height: 100,
+                    color: Colors.white,
+                    child: GestureDetector(
+                      onTap: () => debugPrint('Popup tap!'),
+                      child: Text(
+                        'Container popup for marker at ${marker.point}',
+                      ),
+                    ),
+                  )),
               builder: (context, markers) {
                 return Container(
                   decoration: BoxDecoration(
