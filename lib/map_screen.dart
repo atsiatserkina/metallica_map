@@ -5,8 +5,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_marker_cluster/flutter_map_marker_cluster.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:metallica_map/concert.dart';
 
 import 'AppConstants.dart';
+import 'marker_popup.dart';
 
 class MapScreen extends StatefulWidget {
   const MapScreen({Key? key}) : super(key: key);
@@ -17,8 +19,8 @@ class MapScreen extends StatefulWidget {
 
 class _MapScreenState extends State<MapScreen> {
   final PopupController _popupController = PopupController();
-  List<Marker> markers = [];
-  List concerts = [];
+  List<Concert> _concerts = [];
+  List<Marker> _markers = [];
 
   // Fetch content from the json file
   Future<void> readJson() async {
@@ -27,11 +29,23 @@ class _MapScreenState extends State<MapScreen> {
     final data = await json.decode(response);
 
     List items = data["concerts"];
-    List<Marker> m = items
-        .map((i) => Marker(
+    int id = 1;
+    List<Concert> concerts = items
+        .map((item) => Concert(
+            (id++).toString(),
+            item["address"],
+            item["place"],
+            item["date"],
+            item["link"],
+            item["lng"],
+            item["lat"]))
+        .toList();
+    List<Marker> markers = concerts
+        .map((concert) => Marker(
+              key: Key(concert.id),
+              point: LatLng(concert.lat, concert.lng),
               height: 30,
               width: 30,
-              point: LatLng(i["lat"], i["lng"]),
               builder: (ctx) => const Icon(
                 Icons.music_note_rounded,
                 color: Colors.amber,
@@ -40,8 +54,8 @@ class _MapScreenState extends State<MapScreen> {
         .toList();
 
     setState(() {
-      concerts = items;
-      markers = m;
+      _concerts = concerts;
+      _markers = markers;
     });
   }
 
@@ -60,6 +74,7 @@ class _MapScreenState extends State<MapScreen> {
           maxZoom: 18,
           zoom: 4,
           center: LatLng(38, -87),
+          rotationWinGestures: MultiFingerGesture.pinchZoom,
           maxBounds: LatLngBounds(
             LatLng(-90, -180.0),
             LatLng(90.0, 180.0),
@@ -83,22 +98,14 @@ class _MapScreenState extends State<MapScreen> {
                 padding: EdgeInsets.all(50),
                 maxZoom: 15,
               ),
-              markers: markers,
+              markers: _markers,
               popupOptions: PopupOptions(
                   popupState: PopupState(),
                   popupSnap: PopupSnap.markerTop,
                   popupController: _popupController,
-                  popupBuilder: (_, marker) => Container(
-                    width: 200,
-                    height: 100,
-                    color: Colors.white,
-                    child: GestureDetector(
-                      onTap: () => debugPrint('Popup tap!'),
-                      child: Text(
-                        'Container popup for marker at ${marker.point}',
-                      ),
-                    ),
-                  )),
+                  popupBuilder: (_, marker) => MarkerPopup(_concerts.firstWhere(
+                      (element) =>
+                          element.id == (marker.key as ValueKey).value))),
               builder: (context, markers) {
                 return Container(
                   decoration: BoxDecoration(
