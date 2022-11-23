@@ -47,7 +47,7 @@ class _MapScreenState extends State<MapScreen> {
               height: 30,
               width: 30,
               builder: (ctx) => const Icon(
-                Icons.music_note_rounded,
+                Icons.flash_on,
                 color: Colors.amber,
               ),
             ))
