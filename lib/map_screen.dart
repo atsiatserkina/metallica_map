@@ -6,6 +6,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_marker_cluster/flutter_map_marker_cluster.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:metallica_map/concert.dart';
+import 'package:vector_map_tiles/vector_map_tiles.dart';
 
 import 'AppConstants.dart';
 import 'marker_popup.dart';
@@ -91,7 +92,7 @@ class _MapScreenState extends State<MapScreen> {
               }),
           MarkerClusterLayerWidget(
             options: MarkerClusterLayerOptions(
-              maxClusterRadius: 400,
+              maxClusterRadius: 200,
               size: const Size(40, 40),
               anchor: AnchorPos.align(AnchorAlign.center),
               fitBoundsOptions: const FitBoundsOptions(
