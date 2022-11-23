@@ -72,8 +72,8 @@ class _MapScreenState extends State<MapScreen> {
         options: MapOptions(
           minZoom: 2,
           maxZoom: 18,
-          zoom: 4,
-          center: LatLng(38, -87),
+          zoom: 3,
+          center: LatLng(0, 0),
           rotationWinGestures: MultiFingerGesture.pinchZoom,
           maxBounds: LatLngBounds(
             LatLng(-90, -180.0),
