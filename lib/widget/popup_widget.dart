@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import 'concert.dart';
+import '../model/concert.dart';
 
-class MarkerPopup extends StatelessWidget {
-  const MarkerPopup(this.concert, {super.key});
+class PopupWidget extends StatelessWidget {
+  const PopupWidget(this.concert, {super.key});
 
   final Concert concert;
 

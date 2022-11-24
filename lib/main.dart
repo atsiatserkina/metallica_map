@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'map_screen.dart';
+import 'package:metallica_map/widget/map_widget.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,9 +15,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.grey,
       ),
-      home: const MapScreen(),
+      home: const MapWidget(),
     );
   }
 }
-
-
