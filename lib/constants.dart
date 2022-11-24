@@ -7,4 +7,5 @@ class MapConstants {
   static const String concertClusterCountLayerID = 'metallica-concert-cluster-count';
   static const String concertLayerID = 'metallica-concert';
   static const String guitarPickIcon = 'guitar-pick-icon';
+  static const String guitarPickPath = 'assets/guitar-pick-icon';
 }

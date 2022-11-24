@@ -113,7 +113,7 @@ class MapWidgetState extends State<MapWidget> {
         .animateCamera(CameraUpdate.newCameraPosition(styleInfo.position));
 
     // Add icon from assets
-    final ByteData bytes = await rootBundle.load("guitar-pick.png");
+    final ByteData bytes = await rootBundle.load(MapConstants.guitarPickPath);
     final Uint8List list = bytes.buffer.asUint8List();
     await controller!.addImage(MapConstants.guitarPickIcon, list);
     controller!.addSymbol(
