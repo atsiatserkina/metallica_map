@@ -5,8 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:metallica_map/constants.dart';
+import 'package:metallica_map/widget/popup_concert_widget.dart';
 
-import '../model/StyleInfo.dart';
+import '../model/style_info.dart';
 import '../model/concert.dart';
 
 class MapWidget extends StatefulWidget {
@@ -18,8 +19,73 @@ class MapWidget extends StatefulWidget {
 
 class MapWidgetState extends State<MapWidget> {
   MapboxMapController? controller;
+  final pageController = PageController();
   int selectedStyleId = 0;
   List<Concert> _concerts = [];
+  List<Concert> selectedConcerts = [];
+
+  static const _stylesAndLoaders = [
+    StyleInfo(
+      name: "Geojson cluster",
+      baseStyle: MapboxStyles.DARK,
+      addDetails: addGeojsonCluster,
+      position: CameraPosition(target: LatLng(30, 0), zoom: 2),
+    ),
+    // StyleInfo(
+    //   name: "Geojson heatmap",
+    //   baseStyle: MapboxStyles.DARK,
+    //   addDetails: addGeojsonHeatmap,
+    //   position: CameraPosition(target: LatLng(30, 0), zoom: 2),
+    // )
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    readJson();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final styleInfo = _stylesAndLoaders[selectedStyleId];
+    return Scaffold(
+      body: Stack(
+        children: [
+          MapboxMap(
+            minMaxZoomPreference: const MinMaxZoomPreference(2, 17),
+            rotateGesturesEnabled: false,
+            tiltGesturesEnabled: false,
+            styleString: styleInfo.baseStyle,
+            accessToken: MapConstants.mapBoxToken,
+            onMapCreated: _onMapCreated,
+            initialCameraPosition: styleInfo.position,
+            onStyleLoadedCallback: _onStyleLoadedCallback,
+          ),
+          Positioned(
+            bottom: 30,
+            right: 0,
+            left: 0,
+            child: Builder(
+              builder: (BuildContext context) {
+                if (selectedConcerts.isEmpty) {
+                  return Container();
+                } else {
+                  return PopupConcertWidget(
+                    selectedConcerts,
+                    () {
+                      setState(() {
+                        selectedConcerts.clear();
+                      });
+                    },
+                  );
+                }
+              },
+            ),
+          )
+        ],
+      ),
+    );
+  }
 
   // Fetch content from the json file
   Future<void> readJson() async {
@@ -35,35 +101,11 @@ class MapWidgetState extends State<MapWidget> {
     });
   }
 
-  @override
-  void initState() {
-    super.initState();
-    readJson();
-  }
-
-  void _onMapCreated(MapboxMapController controller) {
-    this.controller = controller;
-    controller.onFeatureTapped.add(onFeatureTap);
-  }
-
-  void onFeatureTap(
-      dynamic featureId, Point<double> point, LatLng latLng) async {
-    print(
-        "Map click: ${point.x},${point.y}   ${latLng.latitude}/${latLng.longitude}, featureId=$featureId");
-    List features = await controller!.queryRenderedFeatures(
-        point,
-        [MapConstants.concertClusterLayerID, MapConstants.concertCountLayerID],
-        null);
-    features.forEach((feature) {
-      if (feature["properties"]["cluster"] == true) {
-        print(feature["properties"]["concert_ids"]);
-      } else {
-        print(feature["properties"]["id"]);
-      }
-    });
-
-    // Concert concert =
-    //     _concerts.firstWhere((element) => element.id == featureId.toString());
+  _onStyleLoadedCallback() async {
+    final styleInfo = _stylesAndLoaders[selectedStyleId];
+    styleInfo.addDetails(controller!);
+    controller!
+        .animateCamera(CameraUpdate.newCameraPosition(styleInfo.position));
   }
 
   static Future<void> addGeojsonCluster(MapboxMapController controller) async {
@@ -72,8 +114,8 @@ class MapWidgetState extends State<MapWidget> {
         const GeojsonSourceProperties(
           data: MapConstants.geoJsonData,
           cluster: true,
-          clusterMaxZoom: 14,
-          clusterRadius: 50,
+          clusterMaxZoom: 17,
+          clusterRadius: 40,
           clusterProperties: {
             "concert_ids": [
               "concat",
@@ -85,7 +127,6 @@ class MapWidgetState extends State<MapWidget> {
             ],
           },
         ));
-
     await controller.addLayer(
       MapConstants.concertSourceId,
       MapConstants.concertClusterLayerID,
@@ -120,53 +161,37 @@ class MapWidgetState extends State<MapWidget> {
         ));
   }
 
-  static const _stylesAndLoaders = [
-    StyleInfo(
-      name: "Geojson cluster",
-      baseStyle: MapboxStyles.LIGHT,
-      addDetails: addGeojsonCluster,
-      position: CameraPosition(target: LatLng(30, 0), zoom: 2),
-    ),
-    // StyleInfo(
-    //   name: "Geojson heatmap",
-    //   baseStyle: MapboxStyles.DARK,
-    //   addDetails: addGeojsonHeatmap,
-    //   position: CameraPosition(target: LatLng(30, 0), zoom: 2),
-    // )
-  ];
-
-  _onStyleLoadedCallback() async {
-    final styleInfo = _stylesAndLoaders[selectedStyleId];
-    styleInfo.addDetails(controller!);
-    controller!
-        .animateCamera(CameraUpdate.newCameraPosition(styleInfo.position));
+  void _onMapCreated(MapboxMapController controller) {
+    this.controller = controller;
+    controller.onFeatureTapped.add(onFeatureTap);
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final styleInfo = _stylesAndLoaders[selectedStyleId];
-    final nextName =
-        _stylesAndLoaders[(selectedStyleId + 1) % _stylesAndLoaders.length]
-            .name;
-    return Scaffold(
-        floatingActionButton: Padding(
-          padding: const EdgeInsets.all(32.0),
-          child: FloatingActionButton.extended(
-            icon: const Icon(Icons.swap_horiz),
-            label: SizedBox(
-                width: 120, child: Center(child: Text("To $nextName"))),
-            onPressed: () => setState(
-              () => selectedStyleId =
-                  (selectedStyleId + 1) % _stylesAndLoaders.length,
-            ),
-          ),
-        ),
-        body: MapboxMap(
-          styleString: styleInfo.baseStyle,
-          accessToken: MapConstants.mapBoxToken,
-          onMapCreated: _onMapCreated,
-          initialCameraPosition: styleInfo.position,
-          onStyleLoadedCallback: _onStyleLoadedCallback,
-        ));
+  void onFeatureTap(
+    dynamic featureId,
+    Point<double> point,
+    LatLng latLng,
+  ) async {
+    List features = await controller!.queryRenderedFeatures(
+        point,
+        [MapConstants.concertClusterLayerID, MapConstants.concertCountLayerID],
+        null);
+
+    for (var feature in features) {
+      if (feature["properties"]["cluster"] == true) {
+        List<String> ids = feature["properties"]["concert_ids"].split(",");
+        List<Concert> concerts =
+            _concerts.where((element) => ids.contains(element.id)).toList();
+        setState(() {
+          selectedConcerts = concerts;
+        });
+      } else {
+        String id = feature["properties"]["id"];
+        Concert concert = _concerts.firstWhere((element) => element.id == id);
+        setState(() {
+          selectedConcerts.clear();
+          selectedConcerts.add(concert);
+        });
+      }
+    }
   }
 }

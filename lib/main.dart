@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Metallica concerts map',
       theme: ThemeData(
-        primarySwatch: Colors.grey,
+        brightness: Brightness.dark,
       ),
       home: const MapWidget(),
     );
