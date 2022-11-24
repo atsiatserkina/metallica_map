@@ -81,6 +81,11 @@ class MapWidgetState extends State<MapWidget> {
                 }
               },
             ),
+          ),
+          const Positioned(
+            top: 4,
+            left: 4,
+            child: Image(image: AssetImage('assets/kontur_map_logo.png')),
           )
         ],
       ),
