@@ -1,16 +1,13 @@
-# metallica_map
+# Metallica_concerts_map
 
-A new Flutter project.
+This project is made during initiative [#30daymapchallenge 2022](https://30daymapchallenge.com/) and dedicated to 27th day and Music topic.
 
-## Getting Started
+Map made within the project shows locations of all 2156 Metallica concerts since 1982 till 2022 and info about each of it.
 
-This project is a starting point for a Flutter application.
+Map of Metallica concerts is here: https://alexklars.github.io/metallica_map/
 
-A few resources to get you started if this is your first Flutter project:
+Data for the project is taken from the official [Metallica website](https://www.metallica.com/tour/past/).
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Made by:
+- [@alexklars](https://github.com/alexklars), Software developer, enthusiast and Metallica huge fan
+- [@atsiatserkina](https://github.com/atsiatserkina), UX Designer in [kontur.io](https://www.kontur.io/), GIS specialist by education
