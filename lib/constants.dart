@@ -3,6 +3,8 @@ class MapConstants {
   static const String jsonData = 'assets/metallica_concerts.json';
   static const String geoJsonData = 'assets/assets/metallica_concerts.geojson';
   static const String concertSourceId = 'metallica-concerts';
-  static const String concertClusterLayerID = 'metallica-concerts-circles';
-  static const String concertCountLayerID = 'metallica-concerts-count';
+  static const String concertClusterCircleLayerID = 'metallica-concert-cluster-circle';
+  static const String concertClusterCountLayerID = 'metallica-concert-cluster-count';
+  static const String concertLayerID = 'metallica-concert';
+  static const String guitarPickIcon = 'guitar-pick-icon';
 }

@@ -101,11 +101,27 @@ class MapWidgetState extends State<MapWidget> {
     });
   }
 
+  void _onMapCreated(MapboxMapController controller) {
+    this.controller = controller;
+    controller.onFeatureTapped.add(onFeatureTap);
+  }
+
   _onStyleLoadedCallback() async {
     final styleInfo = _stylesAndLoaders[selectedStyleId];
     styleInfo.addDetails(controller!);
     controller!
         .animateCamera(CameraUpdate.newCameraPosition(styleInfo.position));
+
+    // Add icon from assets
+    final ByteData bytes = await rootBundle.load("guitar-pick.png");
+    final Uint8List list = bytes.buffer.asUint8List();
+    await controller!.addImage(MapConstants.guitarPickIcon, list);
+    controller!.addSymbol(
+      const SymbolOptions(
+        geometry: LatLng(0, 0),
+        iconImage: "assetImage",
+      ),
+    );
   }
 
   static Future<void> addGeojsonCluster(MapboxMapController controller) async {
@@ -129,7 +145,7 @@ class MapWidgetState extends State<MapWidget> {
         ));
     await controller.addLayer(
       MapConstants.concertSourceId,
-      MapConstants.concertClusterLayerID,
+      MapConstants.concertClusterCircleLayerID,
       const CircleLayerProperties(
         circleColor: [
           Expressions.step,
@@ -150,20 +166,25 @@ class MapWidgetState extends State<MapWidget> {
           40
         ],
       ),
+      filter: ['has', 'point_count'],
     );
     await controller.addLayer(
         MapConstants.concertSourceId,
-        MapConstants.concertCountLayerID,
+        MapConstants.concertClusterCountLayerID,
         const SymbolLayerProperties(
           textField: [Expressions.get, 'point_count_abbreviated'],
           textFont: ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
           textSize: 12,
         ));
-  }
-
-  void _onMapCreated(MapboxMapController controller) {
-    this.controller = controller;
-    controller.onFeatureTapped.add(onFeatureTap);
+    await controller.addLayer(
+      MapConstants.concertSourceId,
+      MapConstants.concertLayerID,
+      const SymbolLayerProperties(
+          iconImage: MapConstants.guitarPickIcon,
+          textSize: 12,
+          iconIgnorePlacement: true),
+      filter: ['!has', 'point_count'],
+    );
   }
 
   void onFeatureTap(
@@ -172,9 +193,14 @@ class MapWidgetState extends State<MapWidget> {
     LatLng latLng,
   ) async {
     List features = await controller!.queryRenderedFeatures(
-        point,
-        [MapConstants.concertClusterLayerID, MapConstants.concertCountLayerID],
-        null);
+      point,
+      [
+        MapConstants.concertClusterCircleLayerID,
+        MapConstants.concertClusterCountLayerID,
+        MapConstants.concertLayerID
+      ],
+      null,
+    );
 
     for (var feature in features) {
       if (feature["properties"]["cluster"] == true) {
