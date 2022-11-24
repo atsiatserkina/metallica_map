@@ -147,24 +147,8 @@ class MapWidgetState extends State<MapWidget> {
       MapConstants.concertSourceId,
       MapConstants.concertClusterCircleLayerID,
       const CircleLayerProperties(
-        circleColor: [
-          Expressions.step,
-          [Expressions.get, 'point_count'],
-          '#51bbd6',
-          100,
-          '#f1f075',
-          750,
-          '#f28cb1'
-        ],
-        circleRadius: [
-          Expressions.step,
-          [Expressions.get, 'point_count'],
-          20,
-          100,
-          30,
-          750,
-          40
-        ],
+        circleColor: '#51bbd6',
+        circleRadius: 20,
       ),
       filter: ['has', 'point_count'],
     );
@@ -182,7 +166,8 @@ class MapWidgetState extends State<MapWidget> {
       const SymbolLayerProperties(
           iconImage: MapConstants.guitarPickIcon,
           textSize: 12,
-          iconIgnorePlacement: true),
+          iconIgnorePlacement: true,
+          iconAnchor: "bottom"),
       filter: ['!has', 'point_count'],
     );
   }
