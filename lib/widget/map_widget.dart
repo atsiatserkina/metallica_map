@@ -4,7 +4,7 @@ import 'dart:html';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
-import 'package:metallica_map/MapConstants.dart';
+import 'package:metallica_map/constants.dart';
 
 import '../model/StyleInfo.dart';
 import '../model/concert.dart';
@@ -55,8 +55,6 @@ class MapWidgetState extends State<MapWidget> {
         [MapConstants.concertClusterLayerID, MapConstants.concertCountLayerID],
         null);
     features.forEach((feature) {
-      print("+++++++++++++++");
-      print(feature);
       if (feature["properties"]["cluster"] == true) {
         print(feature["properties"]["concert_ids"]);
       } else {
@@ -127,13 +125,13 @@ class MapWidgetState extends State<MapWidget> {
       name: "Geojson cluster",
       baseStyle: MapboxStyles.LIGHT,
       addDetails: addGeojsonCluster,
-      position: CameraPosition(target: LatLng(33.5, -118.1), zoom: 5),
+      position: CameraPosition(target: LatLng(30, 0), zoom: 2),
     ),
     // StyleInfo(
     //   name: "Geojson heatmap",
     //   baseStyle: MapboxStyles.DARK,
     //   addDetails: addGeojsonHeatmap,
-    //   position: CameraPosition(target: LatLng(33.5, -118.1), zoom: 5),
+    //   position: CameraPosition(target: LatLng(30, 0), zoom: 2),
     // )
   ];
 
@@ -154,7 +152,7 @@ class MapWidgetState extends State<MapWidget> {
         floatingActionButton: Padding(
           padding: const EdgeInsets.all(32.0),
           child: FloatingActionButton.extended(
-            icon: Icon(Icons.swap_horiz),
+            icon: const Icon(Icons.swap_horiz),
             label: SizedBox(
                 width: 120, child: Center(child: Text("To $nextName"))),
             onPressed: () => setState(
