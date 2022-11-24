@@ -7,8 +7,8 @@ import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:metallica_map/constants.dart';
 import 'package:metallica_map/widget/popup_concert_widget.dart';
 
-import '../model/style_info.dart';
 import '../model/concert.dart';
+import '../model/style_info.dart';
 
 class MapWidget extends StatefulWidget {
   const MapWidget({super.key});
@@ -55,6 +55,7 @@ class MapWidgetState extends State<MapWidget> {
             minMaxZoomPreference: const MinMaxZoomPreference(2, 17),
             rotateGesturesEnabled: false,
             tiltGesturesEnabled: false,
+            compassEnabled: false,
             styleString: styleInfo.baseStyle,
             accessToken: MapConstants.mapBoxToken,
             onMapCreated: _onMapCreated,
@@ -82,11 +83,26 @@ class MapWidgetState extends State<MapWidget> {
               },
             ),
           ),
-          const Positioned(
-            top: 4,
-            left: 4,
-            child: Image(image: AssetImage('assets/kontur_map_logo.png')),
-          )
+          Positioned(
+            top: 3,
+            left: 3,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: const [
+                  Image(
+                    image: AssetImage('assets/kontur_map_logo.png'),
+                    height: 20,
+                  ),
+                  SizedBox(width: 10),
+                  Image(
+                    image: AssetImage('assets/metallica_logo.png'),
+                    height: 30,
+                  )
+                ],
+              ),
+            ),
+          ),
         ],
       ),
     );
