@@ -27,7 +27,7 @@ class MapWidgetState extends State<MapWidget> {
   static const _stylesAndLoaders = [
     StyleInfo(
       name: "Geojson cluster",
-      baseStyle: MapboxStyles.DARK,
+      baseStyle: MapConstants.baseStyle,
       addDetails: addGeojsonCluster,
       position: CameraPosition(target: LatLng(30, 0), zoom: 2),
     ),
@@ -167,20 +167,16 @@ class MapWidgetState extends State<MapWidget> {
     await controller.addLayer(
       MapConstants.concertSourceId,
       MapConstants.concertClusterCircleLayerID,
-      const CircleLayerProperties(
-        circleColor: '#51bbd6',
-        circleRadius: 20,
-      ),
+      const CircleLayerProperties(circleColor: '#51bbd6', circleRadius: 20),
       filter: ['has', 'point_count'],
     );
     await controller.addLayer(
         MapConstants.concertSourceId,
         MapConstants.concertClusterCountLayerID,
         const SymbolLayerProperties(
-          textField: [Expressions.get, 'point_count_abbreviated'],
-          textFont: ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
-          textSize: 12,
-        ));
+            textField: [Expressions.get, 'point_count_abbreviated'],
+            textFont: ['Noto Sans Regular'],
+            textSize: 12));
     await controller.addLayer(
       MapConstants.concertSourceId,
       MapConstants.concertLayerID,
