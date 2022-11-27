@@ -28,7 +28,7 @@ class MapWidgetState extends State<MapWidget> {
   static const _stylesAndLoaders = [
     StyleInfo(
       name: "Geojson cluster",
-      baseStyle: MapConstants.baseStyle,
+      baseStyle: MapboxStyles.DARK,
       addDetails: addGeojsonCluster,
       position: CameraPosition(target: LatLng(30, 0), zoom: 1),
     ),
