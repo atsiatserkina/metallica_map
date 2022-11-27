@@ -122,7 +122,7 @@ class MapWidgetState extends State<MapWidget> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Text(
-                  "Basemap: Kontur Zmrok.   Data: ",
+                  "Basemap: Kontur Zmrok. Data: ",
                   style: TextStyle(
                     color: Colors.white70,
                     fontSize: 11,
@@ -214,7 +214,7 @@ class MapWidgetState extends State<MapWidget> {
         MapConstants.concertClusterCountLayerID,
         const SymbolLayerProperties(
             textField: [Expressions.get, 'point_count_abbreviated'],
-            textFont: ['Noto Sans Regular'],
+            textFont: ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
             textColor: '#ffffff',
             textSize: 12));
     await controller.addLayer(
