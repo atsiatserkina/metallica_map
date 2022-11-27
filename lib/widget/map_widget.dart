@@ -122,10 +122,10 @@ class MapWidgetState extends State<MapWidget> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Text(
-                  "Basemap: Kontur Zmrok,       Data: ",
+                  "Basemap: Kontur Zmrok.   Data: ",
                   style: TextStyle(
                     color: Colors.white70,
-                    fontSize: 12,
+                    fontSize: 11,
                   ),
                 ),
                 GestureDetector(
@@ -134,7 +134,7 @@ class MapWidgetState extends State<MapWidget> {
                     "metallica.com",
                     style: TextStyle(
                       color: Colors.blue,
-                      fontSize: 12,
+                      fontSize: 11,
                       decoration: TextDecoration.underline,
                     ),
                   ),
