@@ -22,9 +22,9 @@ class _PopupConcertWidgetState extends State<PopupConcertWidget> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
-          width: 400,
+          width: 380,
           height: 220,
-          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
+          padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
             color: const Color(0xFF282828),

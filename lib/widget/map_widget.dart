@@ -115,29 +115,41 @@ class MapWidgetState extends State<MapWidget> {
             ),
           ),
           Positioned(
-            bottom: 10,
+            bottom: 4,
             right: 0,
             left: 0,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+            child: Column(
               children: [
                 const Text(
-                  "Basemap: Kontur Zmrok. Data: ",
+                  "Basemap: Kontur Zmrok",
                   style: TextStyle(
                     color: Colors.white70,
                     fontSize: 11,
                   ),
                 ),
-                GestureDetector(
-                  onTap: () => openUrl("https://www.metallica.com/tour/past/"),
-                  child: const Text(
-                    "metallica.com",
-                    style: TextStyle(
-                      color: Colors.blue,
-                      fontSize: 11,
-                      decoration: TextDecoration.underline,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      "Data: ",
+                      style: TextStyle(
+                        color: Colors.white70,
+                        fontSize: 11,
+                      ),
                     ),
-                  ),
+                    GestureDetector(
+                      onTap: () =>
+                          openUrl("https://www.metallica.com/tour/past/"),
+                      child: const Text(
+                        "metallica.com",
+                        style: TextStyle(
+                          color: Colors.blue,
+                          fontSize: 11,
+                          decoration: TextDecoration.underline,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
