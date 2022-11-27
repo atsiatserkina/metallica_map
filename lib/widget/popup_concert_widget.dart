@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:metallica_map/link_ext.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../model/concert.dart';
@@ -72,8 +73,7 @@ class _PopupConcertWidgetState extends State<PopupConcertWidget> {
                     ),
                     trailing: IconButton(
                       icon: const Icon(Icons.launch_outlined),
-                      onPressed: () =>
-                          _launchUrl(Uri.parse(widget.concerts[current].link)),
+                      onPressed: () => openUrl(widget.concerts[current].link),
                       color: Colors.white,
                     ),
                     contentPadding: EdgeInsets.symmetric(),
@@ -122,11 +122,5 @@ class _PopupConcertWidgetState extends State<PopupConcertWidget> {
         ),
       ],
     );
-  }
-
-  Future<void> _launchUrl(Uri url) async {
-    if (!await launchUrl(url)) {
-      throw 'Could not launch $url';
-    }
   }
 }
