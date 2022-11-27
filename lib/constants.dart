@@ -1,6 +1,6 @@
 class MapConstants {
   static const String baseStyle = 'https://disaster.ninja/tiles/basemap/style_night.json';
-  // static const String baseStyle = 'MapboxStyles.DARK';
+  // static const String baseStyle = MapboxStyles.DARK;
   static const String mapBoxToken = 'pk.eyJ1IjoiYWxleG1vIiwiYSI6ImNqdGp6b2N0YjFtbXQ0M3JyNW9rdHkxb2sifQ.Yq1qaGR4g05O0Pug4hMvnA';
   static const String jsonData = 'assets/metallica_concerts.json';
   static const String geoJsonData = 'assets/assets/metallica_concerts.geojson';

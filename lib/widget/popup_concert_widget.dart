@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:metallica_map/link_ext.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../model/concert.dart';
 
@@ -28,7 +27,7 @@ class _PopupConcertWidgetState extends State<PopupConcertWidget> {
           padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
-            color: const Color.fromARGB(255, 75, 70, 70),
+            color: const Color(0xFF282828),
           ),
           child: Wrap(
             children: [

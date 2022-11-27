@@ -30,7 +30,7 @@ class MapWidgetState extends State<MapWidget> {
       name: "Geojson cluster",
       baseStyle: MapConstants.baseStyle,
       addDetails: addGeojsonCluster,
-      position: CameraPosition(target: LatLng(30, 0), zoom: 2),
+      position: CameraPosition(target: LatLng(30, 0), zoom: 1),
     ),
     // StyleInfo(
     //   name: "Geojson heatmap",
@@ -53,7 +53,7 @@ class MapWidgetState extends State<MapWidget> {
       body: Stack(
         children: [
           MapboxMap(
-            minMaxZoomPreference: const MinMaxZoomPreference(2, 17),
+            minMaxZoomPreference: const MinMaxZoomPreference(1, 17),
             rotateGesturesEnabled: false,
             tiltGesturesEnabled: false,
             compassEnabled: false,
@@ -85,11 +85,12 @@ class MapWidgetState extends State<MapWidget> {
             ),
           ),
           Positioned(
-            top: 3,
-            left: 3,
+            top: 0,
+            left: 0,
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
+              padding: const EdgeInsets.only(left: 8.0),
+              child: Center(
+                  child: Row(
                 children: [
                   GestureDetector(
                     onTap: () => openUrl("https://www.kontur.io/"),
@@ -101,13 +102,44 @@ class MapWidgetState extends State<MapWidget> {
                   const SizedBox(width: 10),
                   GestureDetector(
                     onTap: () => openUrl("https://www.metallica.com/tour/past/"),
-                    child: const Image(
-                      image: AssetImage('assets/metallica_logo.png'),
-                      height: 30,
+                    child: const Padding(
+                      padding: EdgeInsets.only(top: 10.0),
+                      child: Image(
+                        image: AssetImage('assets/metallica_logo.png'),
+                        height: 30,
+                      ),
                     ),
                   )
                 ],
-              ),
+              )),
+            ),
+          ),
+          Positioned(
+            bottom: 10,
+            right: 0,
+            left: 0,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text(
+                  "Basemap: Kontur Zmrok,       Data: ",
+                  style: TextStyle(
+                    color: Colors.white70,
+                    fontSize: 12,
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () => openUrl("https://www.metallica.com/tour/past/"),
+                  child: const Text(
+                    "metallica.com",
+                    style: TextStyle(
+                      color: Colors.blue,
+                      fontSize: 12,
+                      decoration: TextDecoration.underline,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ],
@@ -159,7 +191,7 @@ class MapWidgetState extends State<MapWidget> {
           data: MapConstants.geoJsonData,
           cluster: true,
           clusterMaxZoom: 17,
-          clusterRadius: 40,
+          clusterRadius: 80,
           clusterProperties: {
             "concert_ids": [
               "concat",
